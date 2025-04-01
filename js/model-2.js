@@ -6,6 +6,10 @@ import { GLTFLoader } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/l
 // Create a Three.JS Scene
 const scene = new THREE.Scene();
 
+// Set the background color to a light skin-tone mix
+scene.background = new THREE.Color(0xF5E1DA); // Light peach/sand color
+
+
 // Create a camera
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.set(0, 0, 3);
@@ -20,7 +24,7 @@ let originalScale = 1, zoomFactor = 1;
 const baseScreenSize = 800;
 const screenFactor = window.innerWidth / baseScreenSize;
 const rotationSpeed = 0.005 * screenFactor;
-const moveSpeed = 0.005 * screenFactor;
+const moveSpeed = 0.0015 * screenFactor;
 const zoomSpeed = 0.05;  // Adjust zoom sensitivity
 
 // Keep the 3D object in a global variable
@@ -28,7 +32,7 @@ let object;
 
 // Instantiate a loader for the .gltf file
 const loader = new GLTFLoader();
-const modelURL = "https://raw.githubusercontent.com/xab-bax/Demo/main/Gltf%20Food%20Items/pasta_bowl_-_photocatch/scene.gltf";
+const modelURL = "https://raw.githubusercontent.com/xab-bax/SwarjDemo/main/models/large_tv_man_suit/scene.gltf";
 
 // Function to remove previous object
 function clearScene() {
@@ -72,11 +76,11 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.getElementById("container3D").appendChild(renderer.domElement);
 
 // Add lights
-const topLight = new THREE.DirectionalLight(0xffffff, 1);
+const topLight = new THREE.DirectionalLight(0xffffff, 15);
 topLight.position.set(500, 500, 500);
 scene.add(topLight);
 
-const ambientLight = new THREE.AmbientLight(0x333333, 1);
+const ambientLight = new THREE.AmbientLight(0x333333, 15);
 scene.add(ambientLight);
 
 // Function to animate and render scene
@@ -132,9 +136,9 @@ document.addEventListener("touchend", () => {
 document.addEventListener("wheel", (e) => {
     if (!object || isRotating || isMoving) return; // Prevent zoom while rotating/moving
 
-    if (e.deltaY < 0 && zoomFactor < 1.5) {
+    if (e.deltaY < 0 && zoomFactor < 1.8) {
         zoomFactor += zoomSpeed;
-    } else if (e.deltaY > 0 && zoomFactor > 0.6) {
+    } else if (e.deltaY > 0 && zoomFactor > 0.4) {
         zoomFactor -= zoomSpeed;
     }
 
