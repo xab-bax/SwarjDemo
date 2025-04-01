@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>3D Model Viewer</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>3D Model Viewer</h1>
+    </header>
+
+    <main>
+        <div id="container3D"></div>
+    </main>
+
+    <script>
+        // Get the model parameter from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const modelId = urlParams.get("model");
+
+        if (modelId) {
+            const script = document.createElement("script");
+            script.src = `js/model-${modelId}.js`;
+            script.type = "module";
+            document.body.appendChild(script);
+        } else {
+            console.error("No model ID found in URL");
+        }
+    </script>
+</body>
+</html>

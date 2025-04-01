@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo - Made For You</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            background-color: #fff;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        nav li {
+            margin-left: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .search-bar input[type="text"] {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .product-item {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding-bottom: 10px;
+        }
+
+        .product-item img {
+            display: block;
+            width: 100%;
+            height: auto;
+            cursor: pointer;
+        }
+
+        .product-info {
+            padding: 10px 15px;
+        }
+
+        .product-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 1em;
+        }
+
+        .product-price {
+            color: green;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Demo</div>
+        <nav>
+            <ul>
+                <li><a href="#">Get Started</a></li>
+                <li><a href="#">Menswear</a></li>
+                <li><a href="#">Womenswear</a></li>
+                <li><a href="#">Accessories</a></li>
+                <li><a href="#">Sale</a></li>
+                <li><a href="#">Book An Appointment</a></li>
+            </ul>
+        </nav>
+        <div class="search-bar">
+            <input type="text" placeholder="Search">
+        </div>
+    </header>
+
+    <div class="container">
+        <h2 class="section-title">MADE FOR YOU</h2>
+
+        <div class="product-grid">
+            <!-- Product 1 -->
+            <div class="product-item">
+                <a href="modelViewer.html?model=1" class="product-link">
+                    <img src="Cloth-Images/Picture1.png" alt="Product 1">
+                </a>
+                <div class="product-info">
+                    <div class="product-name">Product Name 1</div>
+                    <div class="product-price">$XXX</div>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="product-item">
+                <a href="modelViewer.html?model=2" class="product-link">
+                    <img src="Cloth-Images/Picture2.png" alt="Product 2">
+                </a>
+                <div class="product-info">
+                    <div class="product-name">Product Name 2</div>
+                    <div class="product-price">$YYY</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
