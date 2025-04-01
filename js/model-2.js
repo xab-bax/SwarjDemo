@@ -96,6 +96,10 @@ document.addEventListener("touchstart", (e) => {
     isRotating = false;
     isMoving = false;
     isZooming = false;
+    
+    if (e.touches.length === 2) {
+        isZooming = true; // Set zooming when two fingers are detected
+    }
 });
 
 document.addEventListener("touchmove", (e) => {
@@ -108,7 +112,7 @@ document.addEventListener("touchmove", (e) => {
     let deltaX = touchMoveX - touchStartX;
     let deltaY = touchMoveY - touchStartY;
 
-    if (!isRotating && !isMoving) {
+    if (!isRotating && !isMoving && !isZooming) {
         if (Math.abs(deltaX) > Math.abs(deltaY)) {
             isRotating = true;
         } else {
@@ -116,9 +120,9 @@ document.addEventListener("touchmove", (e) => {
         }
     }
 
-    if (isRotating) {
+    if (isRotating && !isZooming) {
         object.rotation.y += deltaX * rotationSpeed;
-    } else if (isMoving) {
+    } else if (isMoving && !isZooming) {
         camera.position.y += deltaY * moveSpeed;
     }
 
@@ -126,11 +130,34 @@ document.addEventListener("touchmove", (e) => {
     touchStartY = touchMoveY;
 }, { passive: false }); // Disable passive mode to allow preventDefault()
 
+// Handle pinch-to-zoom gesture
+let initialTouchDistance = 0; // Track initial pinch distance
+document.addEventListener("touchmove", (e) => {
+    if (!object || !isZooming || e.touches.length !== 2) return; // Only zoom if two fingers are present
+
+    const currentTouchDistance = Math.hypot(
+        e.touches[1].clientX - e.touches[0].clientX,
+        e.touches[1].clientY - e.touches[0].clientY
+    );
+    if (initialTouchDistance === 0) {
+        initialTouchDistance = currentTouchDistance; // Set initial pinch distance
+    }
+
+    const scaleChange = currentTouchDistance / initialTouchDistance;
+    zoomFactor *= scaleChange;
+    if (zoomFactor < 0.7) zoomFactor = 0.7;
+    if (zoomFactor > 1.8) zoomFactor = 1.8;
+
+    object.scale.set(originalScale * zoomFactor, originalScale * zoomFactor, originalScale * zoomFactor);
+    initialTouchDistance = currentTouchDistance; // Update initial pinch distance
+});
+
 // Reset lock on touch end
 document.addEventListener("touchend", () => {
     isRotating = false;
     isMoving = false;
     isZooming = false;
+    initialTouchDistance = 0; // Reset initial touch distance after zoom
 });
 
 // Handle zooming using mouse wheel
