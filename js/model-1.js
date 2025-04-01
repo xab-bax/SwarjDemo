@@ -96,6 +96,7 @@ document.addEventListener("touchstart", (e) => {
 
 document.addEventListener("touchmove", (e) => {
     if (!object) return;
+    e.preventDefault(); // Prevent default browser scrolling
 
     touchMoveX = e.touches[0].clientX;
     touchMoveY = e.touches[0].clientY;
@@ -119,7 +120,7 @@ document.addEventListener("touchmove", (e) => {
 
     touchStartX = touchMoveX;
     touchStartY = touchMoveY;
-});
+}, { passive: false }); // Disable passive mode to allow preventDefault()
 
 // Reset lock on touch end
 document.addEventListener("touchend", () => {
@@ -132,6 +133,8 @@ document.addEventListener("touchend", () => {
 document.addEventListener("wheel", (e) => {
     if (!object || isRotating || isMoving) return; // Prevent zoom while rotating/moving
 
+    e.preventDefault(); // Prevent default page zoom
+
     if (e.deltaY < 0 && zoomFactor < 2) {
         zoomFactor += zoomSpeed;
     } else if (e.deltaY > 0 && zoomFactor > 0.6) {
@@ -139,13 +142,24 @@ document.addEventListener("wheel", (e) => {
     }
 
     object.scale.set(originalScale * zoomFactor, originalScale * zoomFactor, originalScale * zoomFactor);
-});
+}, { passive: false }); // Prevent browser zooming
 
 // Handle screen resize
 window.addEventListener("resize", () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// Prevent pinch-to-zoom on mobile browsers
+document.addEventListener("gesturestart", (e) => {
+    e.preventDefault();
+});
+document.addEventListener("gesturechange", (e) => {
+    e.preventDefault();
+});
+document.addEventListener("gestureend", (e) => {
+    e.preventDefault();
 });
 
 // Start rendering
