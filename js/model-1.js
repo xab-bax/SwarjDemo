@@ -8,7 +8,7 @@ const scene = new THREE.Scene();
 
 // Create a camera
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.set(0, 0, 10);
+camera.position.set(0, 0, 2);
 
 // Touch tracking variables
 let touchStartX = 0, touchStartY = 0;
@@ -19,8 +19,8 @@ let originalScale = 1, zoomFactor = 1;
 // Adjust speeds based on screen size
 const baseScreenSize = 800;
 const screenFactor = window.innerWidth / baseScreenSize;
-const rotationSpeed = 0.005 * screenFactor;
-const moveSpeed = 0.005 * screenFactor;
+const rotationSpeed = 0.002 * screenFactor;
+const moveSpeed = 0.001 * screenFactor;
 const zoomSpeed = 0.05;  // Adjust zoom sensitivity
 
 // Keep the 3D object in a global variable
@@ -28,7 +28,7 @@ let object;
 
 // Instantiate a loader for the .gltf file
 const loader = new GLTFLoader();
-const modelURL = "https://raw.githubusercontent.com/xab-bax/Demo/main/burger_realistic_gltf/scene.gltf"; // Change for model-2.js
+const modelURL = "https://raw.githubusercontent.com/xab-bax/SwarjDemo/main/models/fancy_tailcoat_suit/scene.gltf"; // Change for model-2.js
 
 // Function to remove previous object
 function clearScene() {
@@ -72,11 +72,11 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.getElementById("container3D").appendChild(renderer.domElement);
 
 // Add lights
-const topLight = new THREE.DirectionalLight(0xffffff, 1.2);
+const topLight = new THREE.DirectionalLight(0xffffff, 2);
 topLight.position.set(500, 500, 500);
 scene.add(topLight);
 
-const ambientLight = new THREE.AmbientLight(0x333333, 1.2);
+const ambientLight = new THREE.AmbientLight(0x333333, 2);
 scene.add(ambientLight);
 
 // Function to animate and render scene
@@ -132,7 +132,7 @@ document.addEventListener("touchend", () => {
 document.addEventListener("wheel", (e) => {
     if (!object || isRotating || isMoving) return; // Prevent zoom while rotating/moving
 
-    if (e.deltaY < 0 && zoomFactor < 1.5) {
+    if (e.deltaY < 0 && zoomFactor < 2) {
         zoomFactor += zoomSpeed;
     } else if (e.deltaY > 0 && zoomFactor > 0.6) {
         zoomFactor -= zoomSpeed;
