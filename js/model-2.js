@@ -9,7 +9,6 @@ const scene = new THREE.Scene();
 // Set the background color to a light skin-tone mix
 scene.background = new THREE.Color(0xF5E1DA); // Light peach/sand color
 
-
 // Create a camera
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.set(0, 0, 3);
@@ -59,6 +58,7 @@ loader.load(
         clearScene();  // Remove any existing object before adding a new one
         object = gltf.scene;
         scene.add(object);
+        object.scale.set(0.55, 0.55, 0.55);
         originalScale = object.scale.x; // Store original size
         zoomFactor = 1;  // Reset zoom factor
     },
@@ -100,6 +100,7 @@ document.addEventListener("touchstart", (e) => {
 
 document.addEventListener("touchmove", (e) => {
     if (!object) return;
+    e.preventDefault(); // Prevent default browser scrolling
 
     touchMoveX = e.touches[0].clientX;
     touchMoveY = e.touches[0].clientY;
@@ -123,7 +124,7 @@ document.addEventListener("touchmove", (e) => {
 
     touchStartX = touchMoveX;
     touchStartY = touchMoveY;
-});
+}, { passive: false }); // Disable passive mode to allow preventDefault()
 
 // Reset lock on touch end
 document.addEventListener("touchend", () => {
@@ -136,20 +137,33 @@ document.addEventListener("touchend", () => {
 document.addEventListener("wheel", (e) => {
     if (!object || isRotating || isMoving) return; // Prevent zoom while rotating/moving
 
+    e.preventDefault(); // Prevent default page zoom
+
     if (e.deltaY < 0 && zoomFactor < 1.8) {
         zoomFactor += zoomSpeed;
-    } else if (e.deltaY > 0 && zoomFactor > 0.4) {
+    } else if (e.deltaY > 0 && zoomFactor > 0.7) {
         zoomFactor -= zoomSpeed;
     }
 
     object.scale.set(originalScale * zoomFactor, originalScale * zoomFactor, originalScale * zoomFactor);
-});
+}, { passive: false }); // Prevent browser zooming
 
 // Handle screen resize
 window.addEventListener("resize", () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// Prevent pinch-to-zoom on mobile browsers
+document.addEventListener("gesturestart", (e) => {
+    e.preventDefault();
+});
+document.addEventListener("gesturechange", (e) => {
+    e.preventDefault();
+});
+document.addEventListener("gestureend", (e) => {
+    e.preventDefault();
 });
 
 // Start rendering
