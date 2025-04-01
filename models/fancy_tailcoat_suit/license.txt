@@ -1,0 +1,11 @@
+Model Information:
+* title:	Fancy Tailcoat Suit
+* source:	https://sketchfab.com/3d-models/fancy-tailcoat-suit-39205a46de554a2aa1645f85fdd3c7c2
+* author:	LuuHung (https://sketchfab.com/LuuHung)
+
+Model License:
+* license type:	CC-BY-ND-4.0 (http://creativecommons.org/licenses/by-nd/4.0/)
+* requirements:	Author must be credited. Modified versions can not be distributed. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Fancy Tailcoat Suit" (https://sketchfab.com/3d-models/fancy-tailcoat-suit-39205a46de554a2aa1645f85fdd3c7c2) by LuuHung (https://sketchfab.com/LuuHung) licensed under CC-BY-ND-4.0 (http://creativecommons.org/licenses/by-nd/4.0/)
