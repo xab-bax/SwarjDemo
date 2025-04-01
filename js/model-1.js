@@ -15,6 +15,7 @@ let touchStartX = 0, touchStartY = 0;
 let touchMoveX = 0, touchMoveY = 0;
 let isRotating = false, isMoving = false, isZooming = false;
 let originalScale = 1, zoomFactor = 1;
+let initialTouchDistance = 0;  // To track the initial distance between two fingers during pinch zoom
 
 // Adjust speeds based on screen size
 const baseScreenSize = 800;
@@ -89,6 +90,14 @@ function animate() {
 document.addEventListener("touchstart", (e) => {
     touchStartX = e.touches[0].clientX;
     touchStartY = e.touches[0].clientY;
+    
+    if (e.touches.length === 2) {
+        initialTouchDistance = Math.hypot(
+            e.touches[1].clientX - e.touches[0].clientX,
+            e.touches[1].clientY - e.touches[0].clientY
+        );
+    }
+
     isRotating = false;
     isMoving = false;
     isZooming = false;
@@ -116,6 +125,23 @@ document.addEventListener("touchmove", (e) => {
         object.rotation.y += deltaX * rotationSpeed;
     } else if (isMoving) {
         camera.position.y += deltaY * moveSpeed;
+    }
+
+    // Check for pinch-to-zoom gesture
+    if (e.touches.length === 2) {
+        const currentTouchDistance = Math.hypot(
+            e.touches[1].clientX - e.touches[0].clientX,
+            e.touches[1].clientY - e.touches[0].clientY
+        );
+        const scaleChange = currentTouchDistance / initialTouchDistance;
+        
+        // Update zoom factor based on the pinch distance change
+        zoomFactor *= scaleChange;
+        if (zoomFactor < 0.6) zoomFactor = 0.6;
+        if (zoomFactor > 2) zoomFactor = 2;
+
+        object.scale.set(originalScale * zoomFactor, originalScale * zoomFactor, originalScale * zoomFactor);
+        initialTouchDistance = currentTouchDistance;  // Update the initial touch distance
     }
 
     touchStartX = touchMoveX;
