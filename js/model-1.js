@@ -16,6 +16,7 @@ let touchMoveX = 0, touchMoveY = 0;
 let isRotating = false, isMoving = false, isZooming = false;
 let originalScale = 1, zoomFactor = 1;
 let initialTouchDistance = 0;  // To track the initial distance between two fingers during pinch zoom
+let isTouchingTwoFingers = false;  // Flag to check if two fingers are touching
 
 // Adjust speeds based on screen size
 const baseScreenSize = 800;
@@ -90,12 +91,16 @@ function animate() {
 document.addEventListener("touchstart", (e) => {
     touchStartX = e.touches[0].clientX;
     touchStartY = e.touches[0].clientY;
-    
+
     if (e.touches.length === 2) {
+        // Track initial distance between two fingers for zooming
         initialTouchDistance = Math.hypot(
             e.touches[1].clientX - e.touches[0].clientX,
             e.touches[1].clientY - e.touches[0].clientY
         );
+        isTouchingTwoFingers = true;
+    } else {
+        isTouchingTwoFingers = false;
     }
 
     isRotating = false;
@@ -113,7 +118,7 @@ document.addEventListener("touchmove", (e) => {
     let deltaX = touchMoveX - touchStartX;
     let deltaY = touchMoveY - touchStartY;
 
-    if (!isRotating && !isMoving) {
+    if (!isRotating && !isMoving && !isTouchingTwoFingers) {
         if (Math.abs(deltaX) > Math.abs(deltaY)) {
             isRotating = true;
         } else {
@@ -121,14 +126,14 @@ document.addEventListener("touchmove", (e) => {
         }
     }
 
-    if (isRotating) {
+    if (isRotating && !isTouchingTwoFingers) {
         object.rotation.y += deltaX * rotationSpeed;
-    } else if (isMoving) {
+    } else if (isMoving && !isTouchingTwoFingers) {
         camera.position.y += deltaY * moveSpeed;
     }
 
-    // Check for pinch-to-zoom gesture
-    if (e.touches.length === 2) {
+    // Zoom only if two fingers are touching
+    if (e.touches.length === 2 && !isRotating && !isMoving) {
         const currentTouchDistance = Math.hypot(
             e.touches[1].clientX - e.touches[0].clientX,
             e.touches[1].clientY - e.touches[0].clientY
@@ -153,6 +158,7 @@ document.addEventListener("touchend", () => {
     isRotating = false;
     isMoving = false;
     isZooming = false;
+    isTouchingTwoFingers = false;
 });
 
 // Handle zooming using mouse wheel
